@@ -6,6 +6,8 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+
+	"github.com/aidenwang9867/scorecard-bigquery-auth/app"
 )
 
 func main() {
@@ -13,9 +15,9 @@ func main() {
 
 	r := mux.NewRouter().StrictSlash(true)
 	r.HandleFunc("/", app.Index)
-	r.HandleFunc("/projects/{host}/{orgName}/{repoName}", app.PostResultsHandler).Methods(http.MethodPost)
-	r.HandleFunc("/projects/{host}/{orgName}/{repoName}", app.GetResultsHandler).Methods(http.MethodGet)
-	r.HandleFunc("/projects/{host}/{orgName}/{repoName}/badge", app.GetBadgeHandler).Methods(http.MethodGet)
+	r.HandleFunc("/query/arbitary", app.PostResultsHandler).Methods(http.MethodPost)
+	r.HandleFunc("/query/vulnerabilities", app.PostResultsHandler).Methods(http.MethodPost)
+	r.HandleFunc("/query/dependencies", app.PostResultsHandler).Methods(http.MethodPost)
 	http.Handle("/", r)
 
 	if err := http.ListenAndServe(":8080", nil); err != nil {

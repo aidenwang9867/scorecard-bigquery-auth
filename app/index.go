@@ -9,11 +9,13 @@ import (
 
 func Index(w http.ResponseWriter, r *http.Request) {
 	endpts := struct {
-		GetRepoResults string `json:"get_repo_results"`
-		GetRepoBadge   string `json:"get_repo_badge"`
+		QueryVulnerabilities string `json:"query_vuln"`
+		QueryDependencies    string `json:"query_deps"`
+		QueryArbitary        string `json:query_arbitary`
 	}{
-		GetRepoResults: "/projects/{host}/{owner}/{repository}",
-		GetRepoBadge:   "/projects/{host}/{owner}/{repository}/badge",
+		QueryVulnerabilities: "/query/vulnerabilities",
+		QueryDependencies:    "/query/dependencies",
+		QueryArbitary:        "/query/arbitary",
 	}
 	endptsBytes, err := json.MarshalIndent(endpts, "", " ")
 	if err != nil {
