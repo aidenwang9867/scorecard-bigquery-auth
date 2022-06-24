@@ -11,7 +11,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	endpts := struct {
 		QueryVulnerabilities string `json:"query_vuln"`
 		QueryDependencies    string `json:"query_deps"`
-		QueryArbitary        string `json:query_arbitary`
+		QueryArbitary        string `json:"query_arbitary"`
 	}{
 		QueryVulnerabilities: "/query/vulnerabilities",
 		QueryDependencies:    "/query/dependencies",
