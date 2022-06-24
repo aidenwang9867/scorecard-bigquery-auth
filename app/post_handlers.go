@@ -17,4 +17,5 @@ func PostResultsHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
+	fmt.Println(reqBody)
 }
