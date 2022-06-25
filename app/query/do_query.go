@@ -9,7 +9,7 @@ import (
 )
 
 func DoQueryAndGetRowIterator(auth BigQueryAuth, queryStr string) (*bigquery.RowIterator, error) {
-	client, context := auth.client, auth.context
+	client, context := auth.Client, auth.Context
 	q := client.Query(queryStr)
 	// Execute the query and return the result row iterator.
 	iter, err := q.Read(context)
@@ -40,7 +40,9 @@ func GetVulnerabilityByAdvID(auth BigQueryAuth, advID string) (Vulnerability, er
 	return vuln, nil
 }
 
-func GetVulnerabilitiesBySystemNameVersion(auth BigQueryAuth, system string, name string, version string) ([]Vulnerability, error) {
+func GetVulnerabilitiesBySystemNameVersion(
+	auth BigQueryAuth, system string, name string, version string,
+) ([]Vulnerability, error) {
 	it, err := DoQueryAndGetRowIterator(
 		auth,
 		fmt.Sprintf(
@@ -66,4 +68,34 @@ func GetVulnerabilitiesBySystemNameVersion(auth BigQueryAuth, system string, nam
 		vuln = append(vuln, row)
 	}
 	return vuln, nil
+}
+
+func GetDependenciesBySystemNameVersion(
+	auth BigQueryAuth, system string, name string, version string,
+) ([]Dependency, error) {
+	it, err := DoQueryAndGetRowIterator(
+		auth,
+		fmt.Sprintf(
+			QueryDependencies,
+			strings.ToUpper(system),
+			name,
+			version,
+		),
+	)
+	if err != nil {
+		return nil, err
+	}
+	dep := []Dependency{}
+	for {
+		row := Dependency{}
+		err := it.Next(&row)
+		if err == iterator.Done {
+			break
+		}
+		if err != nil {
+			return nil, err
+		}
+		dep = append(dep, row)
+	}
+	return dep, nil
 }

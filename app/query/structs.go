@@ -7,12 +7,6 @@ import (
 )
 
 type BigQueryAuth struct {
-	client  *bigquery.Client
-	context context.Context
+	Client  *bigquery.Client
+	Context context.Context
 }
-
-// type QueryDependency struct {
-// 	System  string
-// 	Name    string
-// 	Version string
-// }

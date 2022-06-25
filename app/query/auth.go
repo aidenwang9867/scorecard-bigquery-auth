@@ -14,8 +14,8 @@ func Authenticate() (BigQueryAuth, error) {
 		return BigQueryAuth{}, fmt.Errorf("%w when creating the big query client", err)
 	}
 	auth := BigQueryAuth{
-		client:  cli,
-		context: ctx,
+		Client:  cli,
+		Context: ctx,
 	}
 	return auth, nil
 }

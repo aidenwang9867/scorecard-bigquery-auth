@@ -10,17 +10,21 @@ import (
 	"github.com/aidenwang9867/scorecard-bigquery-auth/app"
 )
 
+const (
+	PORT = "6767"
+)
+
 func main() {
-	fmt.Println("Starting HTTP server for scorecard-bigquery-auth on port 6767...")
+
+	fmt.Printf("Starting HTTP server for scorecard-bigquery-auth on port %s...\n", PORT)
 
 	r := mux.NewRouter().StrictSlash(true)
 	r.HandleFunc("/", app.Index)
-	r.HandleFunc("/query/arbitary", app.PostResultsHandler).Methods(http.MethodPost)
-	r.HandleFunc("/query/vulnerabilities", app.PostResultsHandler).Methods(http.MethodPost)
-	r.HandleFunc("/query/dependencies", app.PostResultsHandler).Methods(http.MethodPost)
+	r.HandleFunc("/query/{type}", app.GetResultsHandler).Methods(http.MethodGet)
+	r.HandleFunc("/query/{type}", app.PostResultsHandler).Methods(http.MethodPost)
 	http.Handle("/", r)
 
-	if err := http.ListenAndServe(":8080", nil); err != nil {
+	if err := http.ListenAndServe(fmt.Sprintf(":%s", PORT), nil); err != nil {
 		log.Fatal(err)
 	}
 }
