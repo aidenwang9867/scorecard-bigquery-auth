@@ -20,7 +20,7 @@ func main() {
 
 	r := mux.NewRouter().StrictSlash(true)
 	r.HandleFunc("/", app.Index)
-	r.HandleFunc("/query/{type}", app.GetResultsHandler).Methods(http.MethodGet)
+	r.HandleFunc("/query/{type}/{system}/{name}/{version}", app.GetResultsHandler).Methods(http.MethodGet)
 	r.HandleFunc("/query/{type}", app.PostResultsHandler).Methods(http.MethodPost)
 	http.Handle("/", r)
 

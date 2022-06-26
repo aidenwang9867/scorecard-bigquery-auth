@@ -99,3 +99,26 @@ func GetDependenciesBySystemNameVersion(
 	}
 	return dep, nil
 }
+
+func GetResultsByArbitraryQuery(auth BigQueryAuth, q string) (string, error) {
+	it, err := DoQueryAndGetRowIterator(
+		auth,
+		q,
+	)
+	if err != nil {
+		return "", err
+	}
+	results := ""
+	for {
+		values := []bigquery.Value{}
+		err := it.Next(&values)
+		if err == iterator.Done {
+			break
+		}
+		if err != nil {
+			return "", err
+		}
+		results = fmt.Sprintf(results+"\n"+"%v", fmt.Sprintf("%v", values))
+	}
+	return results, nil
+}

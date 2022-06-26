@@ -46,8 +46,8 @@ type Dependency struct {
 	SrcRepoURL string `json:"source_repository_url"`
 
 	// Vulnerabilities is a list of Vulnerability.
-	Vulnerabilities []Vulnerability
+	Vulnerabilities []Vulnerability `json:"vulnerabilities"`
 
 	// Dependencies are the dependencies of the dependency, i.e. indirect dependencies.
-	Dependencies []Dependency
+	Dependencies []Dependency `json:"dependencies"`
 }
