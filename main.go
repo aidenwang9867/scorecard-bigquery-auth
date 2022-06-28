@@ -18,10 +18,11 @@ func main() {
 	}
 
 	fmt.Printf("Starting HTTP server for scorecard-bigquery-auth on port %s...\n", port)
-
 	r := mux.NewRouter().StrictSlash(true)
 	r.HandleFunc("/", app.Index)
+	// Support two types of GET query: {vulnerabilities, dependencies}
 	r.HandleFunc("/query/{type}", app.GetResultsHandler).Methods(http.MethodGet)
+	// Support three types of POST query: {vulnerabilities, dependencies, arbitrary}
 	r.HandleFunc("/query/{type}", app.PostResultsHandler).Methods(http.MethodPost)
 	http.Handle("/", r)
 
