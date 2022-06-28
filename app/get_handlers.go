@@ -13,14 +13,14 @@ func GetResultsHandler(w http.ResponseWriter, r *http.Request) {
 	queryType := mux.Vars(r)["type"]
 	switch queryType {
 	case "vulnerabilities", "dependencies":
-		system := mux.Vars(r)["system"]
-		name := mux.Vars(r)["name"]
-		version := mux.Vars(r)["version"]
+		system := r.URL.Query().Get("system")
+		name := r.URL.Query().Get("name")
+		version := r.URL.Query().Get("version")
 		// The Dependency.Name field is required, none indicating the input is not valid.
-		if name == "" {
+		if system == "" || name == "" || version == "" {
 			w.Header().Set("Content-Type", "text/plain")
 			w.WriteHeader(http.StatusBadRequest)
-			_, err := fmt.Fprint(w, "error unmarshaling input JSON")
+			_, err := fmt.Fprint(w, "error found in query parameters")
 			if err != nil {
 				log.Printf("error during Write: %v", err)
 			}

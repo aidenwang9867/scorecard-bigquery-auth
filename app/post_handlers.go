@@ -28,10 +28,19 @@ func PostResultsHandler(w http.ResponseWriter, r *http.Request) {
 		d := query.Dependency{}
 		err := json.Unmarshal(reqBody, &d)
 		// The Dependency.Name field is required, none indicating the input is not valid.
-		if err != nil || d.Name == "" {
+		if err != nil {
 			w.Header().Set("Content-Type", "text/plain")
 			w.WriteHeader(http.StatusBadRequest)
 			_, err := fmt.Fprint(w, "error unmarshaling input JSON")
+			if err != nil {
+				log.Printf("error during Write: %v", err)
+			}
+			return
+		}
+		if d.Ecosystem == "" || d.Name == "" || d.Version == "" {
+			w.Header().Set("Content-Type", "text/plain")
+			w.WriteHeader(http.StatusBadRequest)
+			_, err := fmt.Fprint(w, "error found in post body")
 			if err != nil {
 				log.Printf("error during Write: %v", err)
 			}
