@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/aidenwang9867/scorecard-bigquery-auth/app/query"
+	"github.com/aidenwang9867/DependencyDiffVisualizationInAction/depsdiff"
 	"github.com/gorilla/mux"
 )
 
@@ -26,7 +26,7 @@ func GetResultsHandler(w http.ResponseWriter, r *http.Request) {
 			}
 			return
 		}
-		d := query.Dependency{
+		d := depsdiff.Dependency{
 			Ecosystem: system,
 			Name:      name,
 			Version:   version,

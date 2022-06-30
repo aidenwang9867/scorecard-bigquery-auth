@@ -7,7 +7,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/aidenwang9867/scorecard-bigquery-auth/app/query"
+	"github.com/aidenwang9867/DependencyDiffVisualizationInAction/depsdiff"
 	"github.com/gorilla/mux"
 )
 
@@ -25,7 +25,7 @@ func PostResultsHandler(w http.ResponseWriter, r *http.Request) {
 	queryType := mux.Vars(r)["type"]
 	switch queryType {
 	case "vulnerabilities", "dependencies":
-		d := query.Dependency{}
+		d := depsdiff.Dependency{}
 		err := json.Unmarshal(reqBody, &d)
 		// The Dependency.Name field is required, none indicating the input is not valid.
 		if err != nil {
