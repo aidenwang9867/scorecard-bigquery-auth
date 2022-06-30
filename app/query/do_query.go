@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"cloud.google.com/go/bigquery"
+	"github.com/aidenwang9867/DependencyDiffVisualizationInAction/depsdiff"
 	"google.golang.org/api/iterator"
 )
 
@@ -21,7 +22,7 @@ func DoQueryAndGetRowIterator(auth BigQueryAuth, queryStr string) (*bigquery.Row
 
 // GetVulnerabilityByAdvID now is only used for supplementing the vuln result obtained
 // from the GitHub API with vuln data retrieved from BQ.
-func GetVulnerabilityByAdvID(auth BigQueryAuth, advID string) (Vulnerability, error) {
+func GetVulnerabilityByAdvID(auth BigQueryAuth, advID string) (depsdiff.Vulnerability, error) {
 	it, err := DoQueryAndGetRowIterator(
 		auth,
 		fmt.Sprintf(
@@ -30,19 +31,19 @@ func GetVulnerabilityByAdvID(auth BigQueryAuth, advID string) (Vulnerability, er
 		),
 	)
 	if err != nil {
-		return Vulnerability{}, err
+		return depsdiff.Vulnerability{}, err
 	}
-	vuln := Vulnerability{}
+	vuln := depsdiff.Vulnerability{}
 	err = it.Next(&vuln)
 	if err != nil {
-		return Vulnerability{}, err
+		return depsdiff.Vulnerability{}, err
 	}
 	return vuln, nil
 }
 
 func GetVulnerabilitiesBySystemNameVersion(
 	auth BigQueryAuth, system string, name string, version string,
-) ([]Vulnerability, error) {
+) ([]depsdiff.Vulnerability, error) {
 	it, err := DoQueryAndGetRowIterator(
 		auth,
 		fmt.Sprintf(
@@ -55,9 +56,9 @@ func GetVulnerabilitiesBySystemNameVersion(
 	if err != nil {
 		return nil, err
 	}
-	vuln := []Vulnerability{}
+	vuln := []depsdiff.Vulnerability{}
 	for {
-		row := Vulnerability{}
+		row := depsdiff.Vulnerability{}
 		err := it.Next(&row)
 		if err == iterator.Done {
 			break
@@ -72,7 +73,7 @@ func GetVulnerabilitiesBySystemNameVersion(
 
 func GetDependenciesBySystemNameVersion(
 	auth BigQueryAuth, system string, name string, version string,
-) ([]Dependency, error) {
+) ([]depsdiff.Dependency, error) {
 	it, err := DoQueryAndGetRowIterator(
 		auth,
 		fmt.Sprintf(
@@ -85,9 +86,9 @@ func GetDependenciesBySystemNameVersion(
 	if err != nil {
 		return nil, err
 	}
-	dep := []Dependency{}
+	dep := []depsdiff.Dependency{}
 	for {
-		row := Dependency{}
+		row := depsdiff.Dependency{}
 		err := it.Next(&row)
 		if err == iterator.Done {
 			break

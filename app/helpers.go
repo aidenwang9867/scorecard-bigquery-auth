@@ -7,10 +7,11 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/aidenwang9867/DependencyDiffVisualizationInAction/depsdiff"
 	"github.com/aidenwang9867/scorecard-bigquery-auth/app/query"
 )
 
-func helperQueryVulnerabilities(w http.ResponseWriter, d query.Dependency) {
+func helperQueryVulnerabilities(w http.ResponseWriter, d depsdiff.Dependency) {
 	auth, err := query.Authenticate()
 	if err != nil {
 		w.Header().Set("Content-Type", "text/plain")
@@ -40,7 +41,7 @@ func helperQueryVulnerabilities(w http.ResponseWriter, d query.Dependency) {
 	json.NewEncoder(w).Encode(vuln)
 }
 
-func helperQueryDependencies(w http.ResponseWriter, d query.Dependency) {
+func helperQueryDependencies(w http.ResponseWriter, d depsdiff.Dependency) {
 	auth, err := query.Authenticate()
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
